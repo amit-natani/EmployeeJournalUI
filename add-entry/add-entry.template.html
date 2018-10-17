@@ -1,0 +1,106 @@
+<header>
+  <h1 class="text-center">Add Entry</h1>
+</header>
+
+<div class="container-fluid">
+  <form class="form-horizontal">
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="email">Select Entry Type:</label>
+      <div class="col-sm-10">
+        <ui-select ng-change="getCustomFields()" ng-model="entry.entry_type_id" theme="selectize">
+          <ui-select-match placeholder="Select or search a entry type in the list...">{{$select.selected.name}}</ui-select-match>
+          <ui-select-choices repeat="entry_type.id.$oid as entry_type in entryTypes | filter: $select.search">
+            <span ng-bind-html="entry_type.name | highlight: $select.search"></span>
+          </ui-select-choices>
+        </ui-select>
+        <!-- <select class="form-control"  ng-model="entry.entry_type_id" ng-options="entry_type.id.$oid as entry_type.name for entry_type in entryTypes" required> 
+        </select> -->
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="email">Enter title:</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" ng-model="entry.title">
+      </div>
+    </div>
+    <ng-include src="page.custom_page"></ng-include>
+    <div class="form-group">
+      <label class="control-label col-sm-2">Select users to mention:</label>
+      <div class="col-sm-10"> 
+        <!-- <select class="form-control" multiple ng-model="entry.mentioned_user_ids" ng-options="user._id.$oid as user.first_name for user in users"> 
+        </select> -->
+        <ui-select ng-model="entry.mentioned_user_ids" multiple theme="selectize" title="Choose a user">
+          <ui-select-match placeholder="Select or search a user in the list...">{{$item.first_name + ' ' + $item.last_name}}</ui-select-match>
+          <ui-select-choices repeat="user._id.$oid as user in users | filter: $select.search">
+            <div ng-bind-html="user.first_name + ' ' + user.last_name | highlight: $select.search"></div>
+          </ui-select-choices>
+        </ui-select>
+      </div>
+    </div>
+    <!-- <div class="form-group">
+      <label class="control-label col-sm-2">Related to:</label>
+      <div class="col-sm-10"> 
+        <ui-select ng-model="entry.related_to" theme="selectize">
+          <ui-select-match placeholder="Select or search a entry in the list...">{{$select.selected.title}}</ui-select-match>
+          <ui-select-choices repeat="entry.id.$oid as entry in entries | filter: $select.search">
+            <span ng-bind-html="entry.title | highlight: $select.search"></span>
+          </ui-select-choices>
+        </ui-select>
+      </div>
+    </div> -->
+    <div class="form-group">
+      <label class="control-label col-sm-2">Select users to share:</label>
+      <div class="col-sm-10">
+        <!-- <select class="mdb-select md-form colorful-select dropdown-primary" multiple searchable="Search here.." ng-model="entry.sharee_ids" ng-options="user._id.$oid as user.first_name for user in users"> 
+        </select> -->
+        <ui-select ng-model="entry.sharee_ids" multiple theme="selectize" title="Choose a user">
+          <ui-select-match placeholder="Select or search a user in the list...">{{$item.first_name + ' ' + $item.last_name}}</ui-select-match>
+          <ui-select-choices repeat="user._id.$oid as user in users | filter: $select.search | limitTo:3">
+            <div ng-bind-html="user.first_name + ' ' + user.last_name | highlight: $select.search"></div>
+          </ui-select-choices>
+        </ui-select>
+      </div>
+    </div>
+    <div class="form-group"> 
+      <div class="col-sm-offset-2 col-sm-10">
+        <button class="btn btn-success" type="button" ng-click="saveEntry()">Save Entry</button>
+      </div>
+    </div>
+  </form>
+  <!-- <form>
+    <div>
+      <label>Select Entry Type</label>
+      <select ng-change="getVersions()" ng-model="entry.entry_type" ng-options="entry_type.name for entry_type in entryTypes" required> 
+      </select>
+    </div>
+    <ng-include src="page.custom_page"></ng-include>
+    <div>
+      <label>Select users to mention</label>
+      <select multiple ng-model="entry.mentioned_user_ids" ng-options="user.first_name for user in users"> 
+      </select>
+    </div>
+    <label>Related to</label>
+    <select ng-model="entry.related_to" ng-options="entry.id.$oid for entry in entries"> 
+    </select>
+    <br/>
+    <label>Duration</label>
+    <input type="number" ng-model="entry.duration"> 
+    <br/>
+    <div>
+      <label>Select users to share</label>
+      <select multiple ng-model="entry.sharee_ids" ng-options="user.first_name for user in users"> 
+      </select>
+    </div>
+    <div>
+      <label>Needs Approval</label>
+      <input type="radio" name="needs_approval" ng-model="entry.needs_approval" value="Yes" checked="checked">Yes
+      <input type="radio" name="needs_approval" ng-model="entry.needs_approval" value="No">No
+    </div>
+    <div ng-if="entry.needs_approval == 'Yes'">
+      <label>Select Approvers</label>
+      <select multiple ng-model="entry.approver_ids" ng-options="user.first_name for user in users"> 
+      </select>
+    </div>
+    <button type="button" ng-click="saveEntry()">Save Entry</button>
+  </form> -->
+</div>

@@ -1,0 +1,23 @@
+<div class="form-group">
+  <label class="control-label col-sm-2">Billing Head:</label>
+  <div class="col-sm-10">
+    <ui-select ng-model="entry.content.billing_head" theme="selectize">
+      <ui-select-match placeholder="Select or search a project in the list...">{{$select.selected.value }}</ui-select-match>
+      <ui-select-choices repeat="project.value as project in projects | filter: $select.search">
+        <span ng-bind-html="project.value | highlight: $select.search"></span>
+      </ui-select-choices>
+    </ui-select>
+  </div>
+</div>
+<div class="form-group">
+  <label class="control-label col-sm-2">Created for date:</label>
+  <div class="col-sm-10">
+    <input class="form-control" type="date" ng-model="entry.content.worklog_date"/>
+  </div>
+</div>
+<div class="form-group">
+  <label class="control-label col-sm-2">Duration:</label>
+  <div class="col-sm-10"> 
+    <input class="form-control" type="number" ng-model="entry.content.duration">
+  </div>
+</div>
