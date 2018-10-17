@@ -54,7 +54,7 @@ angular.
           $scope.entry.title = "";
           $scope.entry.description = "";
           $scope.entry.sharee_ids = [];
-          $scope.entry.sharing_level = null;
+          $scope.entry.sharing_level = undefined;
           $scope.entry.tagged_user_ids = [];
           $http.get(`https://blooming-peak-77662.herokuapp.com/entry_types/${$scope.entry.entry_type_id}/get_custom_form.json`).then(function(response) {
             $scope.page.custom_page = "add-entry/add_templates" + response.data.custom_fields.create_url
@@ -71,6 +71,9 @@ angular.
           }
           if($scope.entry.description == undefined || $scope.entry.description.trim() == "") {
             errors.push("Enter Description");
+          }
+          if($scope.entry.sharing_level == undefined || $scope.entry.description.trim() == "") {
+            errors.push("Select Sharing level");
           }
           if(errors.length == 0) {
             $scope.entry.shared_with = {
