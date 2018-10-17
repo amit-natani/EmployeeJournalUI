@@ -34,7 +34,7 @@ angular.
           $http.get(`https://blooming-peak-77662.herokuapp.com/entry_types/${$scope.entry.entry_type_id}/get_custom_form.json`).then(function(response) {
             $scope.page.custom_page = "add-entry/add_templates" + response.data.custom_fields.create_url
           });
-          $http.get('https://blooming-peak-77662.herokuapp.com/tags/5bc5ad3c647dbf2011452758/values.json').then(function(response) {
+          $http.get('https://blooming-peak-77662.herokuapp.com/tags/get_project_list.json').then(function(response) {
             $scope.projects = response.data;
           });
         }
