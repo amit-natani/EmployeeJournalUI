@@ -17,24 +17,24 @@ angular.
 
         $scope.states = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Dakota", "North Carolina", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"];
 
-        $http.get('http://localhost:3001/entry_types.json').then(function(response) {
+        $http.get('https://blooming-peak-77662.herokuapp.com/entry_types.json').then(function(response) {
           $scope.entryTypes = response.data
         });
 
-        $http.get('http://localhost:3001/users.json').then(function(response) {
+        $http.get('https://blooming-peak-77662.herokuapp.com/users.json').then(function(response) {
           $scope.users = response.data
         });
 
-        $http.get('http://localhost:3001/entries.json').then(function(response) {
+        $http.get('https://blooming-peak-77662.herokuapp.com/entries.json').then(function(response) {
           $scope.entries = response.data
         });
 
         $scope.getCustomFields = function () {
           $scope.entry.content = {}
-          $http.get(`http://localhost:3001/entry_types/${$scope.entry.entry_type_id}/get_custom_form.json`).then(function(response) {
+          $http.get(`https://blooming-peak-77662.herokuapp.com/entry_types/${$scope.entry.entry_type_id}/get_custom_form.json`).then(function(response) {
             $scope.page.custom_page = "add-entry/add_templates" + response.data.custom_fields.create_url
           });
-          $http.get('http://localhost:3001/tags/5bc5ad3c647dbf2011452758/values.json').then(function(response) {
+          $http.get('https://blooming-peak-77662.herokuapp.com/tags/5bc5ad3c647dbf2011452758/values.json').then(function(response) {
             $scope.projects = response.data;
           });
         }
@@ -53,7 +53,7 @@ angular.
               permissionLabel: "Project Members",
               users: $scope.entry.sharee_ids
             }
-            $http.post('http://localhost:3001/entries.json', $scope.entry).then(function(response) {
+            $http.post('https://blooming-peak-77662.herokuapp.com/entries.json', $scope.entry).then(function(response) {
               $scope.entry = {}
               $scope.page = {
                 custom_page: null
