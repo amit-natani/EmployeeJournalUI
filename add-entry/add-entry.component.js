@@ -13,9 +13,29 @@ angular.
           custom_page: null
         }
 
-        $scope.selected = undefined;
+        $scope.showSharingUserList = false;
 
-        $scope.states = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Dakota", "North Carolina", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"];
+        $scope.sharingLevels = [
+          {
+            key: 'private',
+            value: 'Private (Self only)'
+          }, {
+            key: 'public',
+            value: 'Public (Everyone)'
+          }, {
+            key: 'managers',
+            value: 'Managers (Only manager/skip level manager)'
+          }, {
+            key: 'custom',
+            value: 'Custom (Select a custom set of users)'
+          }, {
+            key: 'colleagues',
+            value: 'Colleagues (Other people whom are directly connected to you)'
+          }, {
+            key: 'tagged_users',
+            value: 'Tagged users only'
+          }
+        ]
 
         $http.get('https://blooming-peak-77662.herokuapp.com/entry_types.json').then(function(response) {
           $scope.entryTypes = response.data
@@ -31,6 +51,11 @@ angular.
 
         $scope.getCustomFields = function () {
           $scope.entry.content = {}
+          $scope.entry.title = "";
+          $scope.entry.description = "";
+          $scope.entry.sharee_ids = [];
+          $scope.entry.sharing_level = null;
+          $scope.entry.tagged_user_ids = [];
           $http.get(`https://blooming-peak-77662.herokuapp.com/entry_types/${$scope.entry.entry_type_id}/get_custom_form.json`).then(function(response) {
             $scope.page.custom_page = "add-entry/add_templates" + response.data.custom_fields.create_url
           });
@@ -44,8 +69,8 @@ angular.
           if($scope.entry.entry_type_id == undefined) {
             errors.push("Select Entry Type");
           }
-          if($scope.entry.title == undefined || $scope.entry.title.trim() == "") {
-            errors.push("Enter title");
+          if($scope.entry.description == undefined || $scope.entry.description.trim() == "") {
+            errors.push("Enter Description");
           }
           if(errors.length == 0) {
             $scope.entry.shared_with = {
@@ -65,6 +90,15 @@ angular.
           } else {
             alert(errors)
           }
+        }
+
+        $scope.handleAccessibilityChange = function () {
+          if($scope.entry.sharing_level == 'custom') {
+            $scope.showSharingUserList = true;
+          } else {
+            $scope.showSharingUserList = false;
+          }
+          $scope.entry.sharee_ids = []
         }
 
       }]
