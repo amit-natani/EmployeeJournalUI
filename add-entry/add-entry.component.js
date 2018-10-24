@@ -8,8 +8,8 @@ component('addEntry', {
       approver_ids: []
     }
 
-    // $scope.api_url = "https://employee-journal.herokuapp.com";
-    $scope.api_url = "http://localhost:3001";
+    $scope.api_url = "https://employee-journal.herokuapp.com";
+    // $scope.api_url = "http://localhost:3001";
 
     $scope.page = {
       custom_page: null
