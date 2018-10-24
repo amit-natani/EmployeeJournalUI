@@ -1,3 +1,3 @@
-angular.module('userManagementApp', [
+angular.module('employeeJournalApp', [
   'addEntry', 'ui.bootstrap', 'ui.select', 'ngSanitize'
 ]);

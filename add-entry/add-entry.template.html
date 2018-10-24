@@ -5,16 +5,27 @@
 <div class="container-fluid">
   <form class="form-horizontal">
     <div class="form-group">
+      <label class="control-label col-sm-2" for="email">Select Entry Domain:</label>
+      <div class="col-sm-10">
+        <ui-select ng-change="getSubEntryTypes($select.selected)" ng-model="entry.root_entry_type_id" theme="selectize">
+          <ui-select-match placeholder="Select or search a entry domain in the list...">{{$select.selected.name}}</ui-select-match>
+          <ui-select-choices repeat="entry_type.id as entry_type in rootEntryTypes | filter: $select.search">
+            <span ng-bind-html="entry_type.name | highlight: $select.search"></span>
+          </ui-select-choices>
+        </ui-select>
+        <!-- <select class="form-control"  ng-model="entry.entry_type_id" ng-options="entry_type.id as entry_type.name for entry_type in entryTypes" required> 
+        </select> -->
+      </div>
+    </div>
+    <div class="form-group">
       <label class="control-label col-sm-2" for="email">Select Entry Type:</label>
       <div class="col-sm-10">
         <ui-select ng-change="getCustomFields()" ng-model="entry.entry_type_id" theme="selectize">
           <ui-select-match placeholder="Select or search a entry type in the list...">{{$select.selected.name}}</ui-select-match>
-          <ui-select-choices repeat="entry_type.id.$oid as entry_type in entryTypes | filter: $select.search">
+          <ui-select-choices repeat="entry_type.id as entry_type in entryTypes | filter: $select.search">
             <span ng-bind-html="entry_type.name | highlight: $select.search"></span>
           </ui-select-choices>
         </ui-select>
-        <!-- <select class="form-control"  ng-model="entry.entry_type_id" ng-options="entry_type.id.$oid as entry_type.name for entry_type in entryTypes" required> 
-        </select> -->
       </div>
     </div>
     <div class="form-group">
@@ -26,18 +37,19 @@
     <div class="form-group">
       <label class="control-label col-sm-2">Description:</label>
       <div class="col-sm-10">
-        <textarea class="form-control" ng-model="entry.description"></textarea>
+        <!-- <textarea style="width: 100%" id="textarea" ng-keyup="handleTagging($event)" ng-model="entry.description"></textarea> -->
+        <textarea style="width: 100%" id="textarea" ng-model="entry.description"></textarea>
       </div>
     </div>
     <ng-include src="page.custom_page"></ng-include>
     <div class="form-group">
       <label class="control-label col-sm-2">Tag Users:</label>
       <div class="col-sm-10"> 
-        <!-- <select class="form-control" multiple ng-model="entry.tagged_user_ids" ng-options="user._id.$oid as user.first_name for user in users"> 
+        <!-- <select class="form-control" multiple ng-model="entry.tagged_user_ids" ng-options="user.id as user.first_name for user in users"> 
         </select> -->
         <ui-select ng-model="entry.tagged_user_ids" multiple theme="selectize" title="Choose a user">
           <ui-select-match placeholder="Select or search a user in the list...">{{$item.first_name + ' ' + $item.last_name}}</ui-select-match>
-          <ui-select-choices repeat="user._id.$oid as user in users | filter: $select.search">
+          <ui-select-choices repeat="user.id as user in users | filter: $select.search">
             <div ng-bind-html="user.first_name + ' ' + user.last_name | highlight: $select.search"></div>
           </ui-select-choices>
         </ui-select>
@@ -54,12 +66,12 @@
         </ui-select>
       </div>
     </div>
-    <div class="form-group" ng-if="showSharingUserList">
+    <div class="form-group" ng-show="entry.sharing_level == 'custom'">
       <label class="control-label col-sm-2">Select users to share:</label>
       <div class="col-10">
-        <ui-select style="width: 100%" ng-model="entry.sharee_ids" multiple theme="select2">
+        <ui-select style="width: 100%" ng-model="entry.sharee_ids" multiple theme="selectize">
           <ui-select-match placeholder="Select or search a user in the list...">{{$item.first_name + ' ' + $item.last_name}}</ui-select-match>
-          <ui-select-choices repeat="user._id.$oid as user in users | filter: $select.search">
+          <ui-select-choices repeat="user.id as user in users | filter: $select.search">
             <div ng-bind-html="user.first_name + ' ' + user.last_name | highlight: $select.search"></div>
           </ui-select-choices>
         </ui-select>
@@ -84,7 +96,7 @@
       </select>
     </div>
     <label>Related to</label>
-    <select ng-model="entry.related_to" ng-options="entry.id.$oid for entry in entries"> 
+    <select ng-model="entry.related_to" ng-options="entry.id for entry in entries"> 
     </select>
     <br/>
     <label>Duration</label>
