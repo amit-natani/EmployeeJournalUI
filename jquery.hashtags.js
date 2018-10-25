@@ -8,7 +8,8 @@
 	$.fn.hashtags = function() {
     $(this).wrap('<div class="jqueryHashtags"><div class="highlighter"></div></div>').unwrap().before('<div class="highlighter"></div>').wrap('<div class="typehead"></div></div>');
     $(this).parent().parent().append('<div class="suggestions"></div>')
-		$(this).addClass("theSelector");
+    $(this).addClass("theSelector");
+    console.log("Test Hashtag")
 		autosize($(this));
 		// $(this).on("keyup", function() {
 		// 	var str = $(this).val();
