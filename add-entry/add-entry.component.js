@@ -8,6 +8,10 @@ component('addEntry', {
       approver_ids: []
     }
 
+    $(document).ready(function() {
+      $("#textarea").hashtags();
+    });
+
     $scope.api_url = "https://employee-journal.herokuapp.com";
     // $scope.api_url = "http://localhost:3001";
 
