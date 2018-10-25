@@ -112,7 +112,11 @@ component('addEntry', {
       $scope.entry.sharee_ids = []
     }
 
-    $scope.selectSuggestion = function(suggestion) {
+    $scope.demo = {
+      value: null
+    }
+
+    $scope.selectSuggestion = function() {
       var str = $("#textarea").val();
       var div = document.createElement("div");
       $("#textarea").parent().parent().find(".suggestions").html(div);
@@ -120,7 +124,8 @@ component('addEntry', {
       let sub_str = str.substr(0, currentIndex)
       let lastIndexOfHash = str.lastIndexOf("#");
       let sub_str1 = str.substr(0, lastIndexOfHash + 1);
-      sub_str1 += suggestion;
+      sub_str1 += $scope.demo.value;
+      $scope.demo.value = null
       $("#textarea").val(sub_str1)
     }
 
@@ -160,15 +165,15 @@ component('addEntry', {
       $("#textarea").parent().parent().find(".highlighter").css("width", $("#textarea").css("width"));
       str = str.replace(/\n/g, '<br>');
       if (!str.match(/(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?#([a-zA-Z0-9]+)/g) && !str.match(/(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?@([a-zA-Z0-9]+)/g) && !str.match(/(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?#([\u0600-\u06FF]+)/g) && !str.match(/(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?@([\u0600-\u06FF]+)/g)) {
+        var selectionStart = $("#textarea").get(0).selectionStart
         if (str.match(/#/g)) {
           if(str.indexOf("#") == str.lastIndexOf("#")) {
-            new_str = str.substr(0, $("#textarea").get(0).selectionStart)
+            new_str = str.substr(0, selectionStart)
           } else {
             new_str = str.substr(str.lastIndexOf("#"), $("#textarea").get(0).selectionStart)
           }
-          console.log(new_str)
           if(new_str.match(/#([_a-zA-Z0-9])/g) != null) {
-            text = new_str.match(/#([_a-zA-Z0-9])/g)[new_str.match(/#([_a-zA-Z0-9]+)/g).length - 1];
+            text = new_str.match(/#([_a-zA-Z0-9])+/g)[new_str.match(/#([_a-zA-Z0-9]+)/g).length - 1];
             text = text.slice(1, text.length);
             $http({
               url: `${$scope.api_url}/tags/get_open_suggestions.json`,
@@ -182,11 +187,11 @@ component('addEntry', {
                 var div = document.createElement("div");
                 $("#textarea").parent().parent().find(".suggestions").html(div);
               } else {
-                let txt1 = "<ul>"
+                let txt1 = `<select ng-model='demo.value' ng-change="selectSuggestion()">`
                 $scope.suggestions.forEach(suggestion => {
-                  txt1 += `<li ng-click='selectSuggestion("${suggestion}")'>` + suggestion + "</li>"
+                  txt1 += `<option value='${suggestion}' ng-click='selectSuggestion("${suggestion}")'>` + suggestion + "</option>"
                 });
-                txt1 += "</ul>";
+                txt1 += "</select>";
                 // $("#textarea").parent().find(".suggestions").html(txt1);
                 // ______________________
                 var x = $("#textarea").offset().left + $("#textarea").get(0).selectionEnd;
@@ -197,7 +202,7 @@ component('addEntry', {
                 div.style.width = "100px";
                 div.style.background = "transparent";
                 div.style.color = "black"
-                div.style.border = "thin solid black";
+                // div.style.border = "thin solid black";
                 div.innerHTML = txt1;
                 div.style.left = x.toString()+"px";
                 div.style.marginTop = "-25px";
